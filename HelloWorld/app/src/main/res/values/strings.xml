@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HelloWorld</string>
+    <string name="bill_amount">Bill Amount</string>
+    <string name="percent">Percent</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="tip">Tip</string>
+    <string name="total">Total</string>
+</resources>
