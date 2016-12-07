@@ -6,4 +6,16 @@
     <string name="plus">+</string>
     <string name="tip">Tip</string>
     <string name="total">Total</string>
+
+    <string-array name="rounding_keys">
+        <item>None</item>
+        <item>Tip</item>
+        <item>Total</item>
+    </string-array>
+    <string-array name="rounding_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

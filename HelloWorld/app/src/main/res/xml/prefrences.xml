@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:title="Remember tip percent"
+        android:summary="Remember tip percentage to load it again."
+        android:key="check_box_preference_1" />
+    <ListPreference
+        android:defaultValue="0"
+        android:title="Rounding?"
+        android:summary="Set the rounding option for the calculation"
+        android:entries="@array/rounding_keys"
+        android:entryValues="@array/rounding_values"
+        android:key="list_preference_1"
+        android:dialogTitle="Rounding?" />
+</PreferenceScreen>

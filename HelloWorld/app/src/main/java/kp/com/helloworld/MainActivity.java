@@ -1,8 +1,13 @@
 package kp.com.helloworld;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,8 +17,8 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener,Button.OnClickListener {
 
-    private EditText billAmount, percent;
-    private TextView tip, total;
+    private EditText billAmount;
+    private TextView tip, total, percent;
     private Button plusButton, minusButton;
 
     @Override
@@ -23,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
         billAmount = (EditText) findViewById(R.id.billAmount);
         tip = (TextView) findViewById(R.id.tip);
-        percent = (EditText) findViewById(R.id.percent);
+        percent = (TextView) findViewById(R.id.percent);
         total = (TextView) findViewById(R.id.total);
         plusButton = (Button) findViewById(R.id.plus);
         minusButton = (Button) findViewById(R.id.minus);
@@ -32,7 +37,31 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         plusButton.setOnClickListener(this);
         minusButton.setOnClickListener(this);
 
-        percent.setText("4.0");
+        PreferenceManager.setDefaultValues(getApplicationContext(),R.xml.prefrences,true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_options,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i;
+        switch (item.getItemId()) {
+            case R.id.item1:
+                i = new Intent(getApplicationContext(),AboutActivity.class);
+                startActivity(i);
+                break;
+            case R.id.item2:
+                i = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(i);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return  true;
     }
 
     @Override
