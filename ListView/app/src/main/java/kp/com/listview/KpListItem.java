@@ -10,19 +10,19 @@ import java.util.Date;
 
 public class KpListItem {
 
-    private String kpItem;
+    private String kpTitle;
     private String kpDescription;
     private String kplink;
     private String kpPublishedDate;
     private SimpleDateFormat kpDateOutFormat = new SimpleDateFormat("EEEE, h:mm a (MMM dd)");
     private SimpleDateFormat kpDateInFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
 
-    public String getKpItem() {
-        return kpItem;
+    public String getKpTitle() {
+        return kpTitle;
     }
 
-    public void setKpItem(String kpItem) {
-        this.kpItem = kpItem;
+    public void setKpTitle(String kpItem) {
+        this.kpTitle = kpItem;
     }
 
     public String getKpDescription() {

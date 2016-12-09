@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -37,10 +38,13 @@ public class FileIO {
             InputStream in = url.openStream();
             FileOutputStream out = kpContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             byte[] buffer = new byte[1024];
-            int bytes;
-            while((bytes = in.read()) != -1) {
-                out.write(buffer, 0, bytes);
+            int bytes = in.read(buffer);
+            while(bytes != -1) {
+                out.write(buffer,0,bytes);
+                bytes = in.read(buffer);
             }
+            out.close();
+            in.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -59,10 +63,12 @@ public class FileIO {
 
             FileInputStream in =  kpContext.openFileInput(FILENAME);
             InputSource source = new InputSource(in);
+            source.setEncoding("UTF-8");
             reader.parse(source);
             return handler.getFeed();
         } catch (Exception e) {
             Log.e("News reader", e.toString());
         }
+        return null;
     }
 }
