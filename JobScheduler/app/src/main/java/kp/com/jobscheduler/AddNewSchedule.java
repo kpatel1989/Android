@@ -25,24 +25,32 @@ import java.util.Date;
 public class AddNewSchedule extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
 //    DatePicker datePicker;
-    Button selectDate, selectTime, save;
-    EditText date,time;
+    Button selectStartDate, selectStartTime, selectEndDate, selectEndTime, save;
+    EditText startDate,startTime,endDate,endTime;
+    boolean isPickerStartTime,isPickerStartDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_schedule);
-//        datePicker = (DatePicker) findViewById(R.id.datePicker);
-//        Log.d("Date", new Date().toString() + "");
-//        datePicker.init(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth(),this);
-        selectDate = (Button) findViewById(R.id.selectDate);
-        selectDate.setOnClickListener(this);
 
-        selectTime = (Button) findViewById(R.id.selectTime);
-        selectTime.setOnClickListener(this);
+        selectStartDate = (Button) findViewById(R.id.selectStartDate);
+        selectStartDate.setOnClickListener(this);
 
-        date = (EditText) findViewById(R.id.date);
-        time = (EditText) findViewById(R.id.time);
+        selectStartTime = (Button) findViewById(R.id.selectStartTime);
+        selectStartTime.setOnClickListener(this);
+
+        startDate = (EditText) findViewById(R.id.startDate);
+        startTime = (EditText) findViewById(R.id.startTime);
+
+        selectEndDate = (Button) findViewById(R.id.selectEndDate);
+        selectEndDate.setOnClickListener(this);
+
+        selectEndTime = (Button) findViewById(R.id.selectEndTime);
+        selectEndTime.setOnClickListener(this);
+
+        endDate = (EditText) findViewById(R.id.endDate);
+        endTime = (EditText) findViewById(R.id.endTime);
 
         save = (Button) findViewById(R.id.save);
         save.setOnClickListener(this);
@@ -50,7 +58,8 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v == selectDate) {
+        if (v == selectStartDate) {
+            isPickerStartDate = true;
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
@@ -59,7 +68,29 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
             // Create a new instance of DatePickerDialog and return it
             DatePickerDialog  dialog = new DatePickerDialog(this, this, year, month, day);
             dialog.show();
-        } else if (v == selectTime) {
+        } else if (v == selectStartTime) {
+            isPickerStartTime = true;
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            TimePickerDialog newFragment = new TimePickerDialog(this, this, hour, minute,
+                    DateFormat.is24HourFormat(this));
+
+            newFragment.show();
+        } else if (v == selectEndDate) {
+            isPickerStartDate = false;
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            DatePickerDialog  dialog = new DatePickerDialog(this, this, year, month, day);
+            dialog.show();
+        } else if (v == selectEndTime) {
+            isPickerStartTime = false;
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
@@ -73,7 +104,7 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
             SharedPreferences prefs = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             String dates = prefs.getString("dates","");
-            dates += "," + date.getText() + "-" + time.getText();
+            dates += "," + startDate.getText() + "-" + startTime.getText();
             editor.putString("dates",dates);
             this.finish();
         }
@@ -82,11 +113,20 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        time.setText(hourOfDay + ":" + minute);
+        if (isPickerStartTime) {
+            startTime.setText(hourOfDay + ":" + minute);
+        } else {
+            endTime.setText(hourOfDay + ":" + minute);
+        }
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        date.setText(dayOfMonth + "/" + month + "/" + year);
+        if (isPickerStartDate) {
+            startDate.setText(dayOfMonth + "/" + month + "/" + year);
+        } else {
+            endDate.setText(dayOfMonth + "/" + month + "/" + year);
+        }
+
     }
 }

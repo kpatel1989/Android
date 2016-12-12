@@ -1,8 +1,11 @@
 package kp.com.listview;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -11,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     KpRssFeed rssFeed;
     FileIO fileIO;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         list = (ListView) findViewById(R.id.list);
+        list.setOnItemClickListener(this);
+
         title = (TextView) findViewById(R.id.textView);
 
         fileIO = new FileIO(this.getApplicationContext());
@@ -85,5 +90,21 @@ public class MainActivity extends AppCompatActivity {
         SimpleAdapter adapter =
                 new SimpleAdapter(this, data, resource, from, to);
         list.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        // get the item at the specified position
+        KpListItem item = rssFeed.getItem(position);
+
+        // create an intent
+        Intent intent = new Intent(this, KpItemActivity.class);
+
+        intent.putExtra("pubdate", item.getKpPublishedDate());
+        intent.putExtra("title", item.getKpTitle());
+        intent.putExtra("description", item.getKpDescription());
+        intent.putExtra("link", item.getKplink());
+
+        this.startActivity(intent);
     }
 }

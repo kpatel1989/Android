@@ -65,10 +65,9 @@ public class KpRssFeedHandler extends DefaultHandler {
         }
     }
 
-
     @Override
-    public void characters(char[] chars, int i, int i1) throws SAXException {
-        String str = new String(chars,i,i1);
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        String str = new String(ch);
         if (isItem) {
             if (isTitle) {
                 item.setKpTitle(str);
