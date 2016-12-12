@@ -23,8 +23,9 @@ public class KpRssFeedHandler extends DefaultHandler {
 
     @Override
     public void startElement(String s, String s1, String s2, Attributes attributes) throws SAXException {
-        switch (s) {
+        switch (s2) {
             case "item":
+                item = new KpListItem();
                 isItem = true;
                 break;
             case "title":
@@ -41,14 +42,29 @@ public class KpRssFeedHandler extends DefaultHandler {
         }
     }
 
+
     @Override
-    public void endElement(String s, String s1, String s2) throws SAXException {
-        if (s.equals("item")) {
-            feed.addItem(item);
-            item = null;
-            isItem = false;
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        switch (qName) {
+            case "item":
+                feed.addItem(item);
+                item = null;
+                isItem = false;
+                break;
+            case "title":
+                isTitle = false;
+                break;
+            case "description":
+                isDescription = false;
+                break;
+            case "link":
+                isLink = false;
+                break;
+            case "pubDate":
+                isPubDate = false;
         }
     }
+
 
     @Override
     public void characters(char[] chars, int i, int i1) throws SAXException {
