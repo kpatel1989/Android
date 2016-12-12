@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader2/app/build/intermediates/res/merged/debug/layout/activity_item.xml",
+        "source": "/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader2/app/src/main/res/layout/activity_item.xml"
+    },
+    {
+        "merged": "/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader2/app/build/intermediates/res/merged/debug/layout/listview_item.xml",
+        "source": "/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader2/app/src/main/res/layout/listview_item.xml"
+    },
+    {
+        "merged": "/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader2/app/build/intermediates/res/merged/debug/layout/activity_items.xml",
+        "source": "/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader2/app/src/main/res/layout/activity_items.xml"
+    }
+]

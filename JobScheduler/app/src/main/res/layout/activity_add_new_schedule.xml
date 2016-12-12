@@ -12,12 +12,10 @@
     tools:context="kp.com.jobscheduler.AddNewSchedule">
 
     <TextView
-        android:text="Add a schedule"
+        android:text="Start Date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView2"/>
+        android:id="@+id/textView4" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,15 +35,14 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="5"
-        android:id="@+id/date"
+        android:id="@+id/startDate"
         android:layout_alignBaseline="@+id/textView3"/>
 
     <Button
         android:text="Select Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/date"
-        android:id="@+id/selectDate" />
+        android:id="@+id/selectStartDate" />
 
     </LinearLayout>
     <LinearLayout
@@ -66,16 +63,76 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="5"
-        android:id="@+id/time"
-        android:layout_alignBaseline="@+id/textView6" />
+        android:id="@+id/startTime" />
 
     <Button
         android:text="Select Time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/selectTime"
-        android:layout_alignBaseline="@id/time"/>
-</LinearLayout>
+        android:id="@+id/selectStartTime"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:text="Start Date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:text="Date :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView8"
+            android:ems="4"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="5"
+            android:id="@+id/endDate"/>
+
+        <Button
+            android:text="Select Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/selectEndDate" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:text="Time :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:ems="4"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="5"
+            android:id="@+id/endTime" />
+
+        <Button
+            android:text="Select Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/selectEndTime"/>
+
+    </LinearLayout>
 
     <Button
         android:text="Save"

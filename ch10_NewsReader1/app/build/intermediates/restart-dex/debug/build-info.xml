@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="x86_64,x86"
+    api-level="23"
+    density="xxhdpi"
+    format="8"
+    plugin-version="2.2.3"
+    timestamp="2645608217869"
+    token="6047010614363172728" >
+
+    <task
+        name="javac"
+        duration="0" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="0" />
+    <task
+        name="verifier"
+        duration="0" />
+
+    <build
+        timestamp="849505473030"
+        verifier="FULL_BUILD_REQUESTED" >
+        <artifact
+            location="/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader1/app/build/outputs/apk/app-debug.apk"
+            type="MAIN" />
+    </build>
+    <build timestamp="2645608217869" />
+
+</instant-run>
