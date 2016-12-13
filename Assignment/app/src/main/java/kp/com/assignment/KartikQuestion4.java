@@ -7,16 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class KartikQuestion4 extends AppCompatActivity implements View.OnClickListener {
 
-    TextView questionLabel;
-    Button nextBtn;
-    RadioButton radioButton1, radioButton2, radioButton3, radioButton4;
-    Question question;
-    String selectedAns;
+    TextView kpQuestionLabel;
+    Button kpNextBtn;
+    RadioButton kpRadioButton1, kpRadioButton2, kpRadioButton3, kpRadioButton4;
+    KpQuestion kpQuestion;
+    String kpSelectedAns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,60 +23,60 @@ public class KartikQuestion4 extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_kartik_question4);
 
 
-        questionLabel = (TextView) findViewById(R.id.question4Label);
-        radioButton1 = (RadioButton) findViewById(R.id.radioButton1);
-        radioButton1.setOnClickListener(this);
-        radioButton2 = (RadioButton) findViewById(R.id.radioButton2);
-        radioButton2.setOnClickListener(this);
-        radioButton3 = (RadioButton) findViewById(R.id.radioButton3);
-        radioButton3.setOnClickListener(this);
-        radioButton4 = (RadioButton) findViewById(R.id.radioButton4);
-        radioButton4.setOnClickListener(this);
+        kpQuestionLabel = (TextView) findViewById(R.id.question4Label);
+        kpRadioButton1 = (RadioButton) findViewById(R.id.radioButton1);
+        kpRadioButton1.setOnClickListener(this);
+        kpRadioButton2 = (RadioButton) findViewById(R.id.radioButton2);
+        kpRadioButton2.setOnClickListener(this);
+        kpRadioButton3 = (RadioButton) findViewById(R.id.radioButton3);
+        kpRadioButton3.setOnClickListener(this);
+        kpRadioButton4 = (RadioButton) findViewById(R.id.radioButton4);
+        kpRadioButton4.setOnClickListener(this);
 
-        nextBtn = (Button) findViewById(R.id.question4Next);
-        nextBtn.setOnClickListener(this);
+        kpNextBtn = (Button) findViewById(R.id.question4Next);
+        kpNextBtn.setOnClickListener(this);
 
-        question = ((App)getApplication()).questionBank.getNextQuestion(3);
+        kpQuestion = ((App)getApplication()).kpQuestionBank.kpGetNextQuestion(3);
 
-        questionLabel.setText("4. " + question.question);
-        radioButton1.setText(question.options.get(0));
-        radioButton2.setText(question.options.get(1));
-        radioButton3.setText(question.options.get(2));
-        radioButton4.setText(question.options.get(3));
+        kpQuestionLabel.setText("4. " + kpQuestion.kpQuestion);
+        kpRadioButton1.setText(kpQuestion.kpOptions.get(0));
+        kpRadioButton2.setText(kpQuestion.kpOptions.get(1));
+        kpRadioButton3.setText(kpQuestion.kpOptions.get(2));
+        kpRadioButton4.setText(kpQuestion.kpOptions.get(3));
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == radioButton1.getId()) {
-            clearBgColor();
-            radioButton1.setBackgroundColor(Color.GREEN);
-            this.selectedAns = radioButton1.getText().toString();
-        } else if (v.getId() == radioButton2.getId()) {
-            clearBgColor();
-            radioButton2.setBackgroundColor(Color.GREEN);
-            this.selectedAns = radioButton1.getText().toString();
-        } else if (v.getId() == radioButton3.getId()) {
-            clearBgColor();
-            radioButton3.setBackgroundColor(Color.GREEN);
-            this.selectedAns = radioButton1.getText().toString();
-        } else if (v.getId() == radioButton4.getId()) {
-            clearBgColor();
-            radioButton4.setBackgroundColor(Color.GREEN);
-            this.selectedAns = radioButton1.getText().toString();
-        } else if (v.getId() == nextBtn.getId()) {
-            if (selectedAns != "") {
-                if (question.isCorrect(this.selectedAns)) {
-                    ((App) getApplication()).questionBank.correctAns += 1;
+        if (v.getId() == kpRadioButton1.getId()) {
+            kpClearBgColor();
+            kpRadioButton1.setBackgroundColor(Color.GREEN);
+            this.kpSelectedAns = kpRadioButton1.getText().toString();
+        } else if (v.getId() == kpRadioButton2.getId()) {
+            kpClearBgColor();
+            kpRadioButton2.setBackgroundColor(Color.GREEN);
+            this.kpSelectedAns = kpRadioButton1.getText().toString();
+        } else if (v.getId() == kpRadioButton3.getId()) {
+            kpClearBgColor();
+            kpRadioButton3.setBackgroundColor(Color.GREEN);
+            this.kpSelectedAns = kpRadioButton1.getText().toString();
+        } else if (v.getId() == kpRadioButton4.getId()) {
+            kpClearBgColor();
+            kpRadioButton4.setBackgroundColor(Color.GREEN);
+            this.kpSelectedAns = kpRadioButton1.getText().toString();
+        } else if (v.getId() == kpNextBtn.getId()) {
+            if (kpSelectedAns != "") {
+                if (kpQuestion.isCorrect(this.kpSelectedAns)) {
+                    ((App) getApplication()).kpQuestionBank.kpCorrectAns += 1;
                 }
                 startActivity(new Intent(this, KartikQuestion5.class));
             }
         }
     }
 
-    private void clearBgColor() {
-        radioButton1.setBackgroundColor(Color.WHITE);
-        radioButton2.setBackgroundColor(Color.WHITE);
-        radioButton3.setBackgroundColor(Color.WHITE);
-        radioButton4.setBackgroundColor(Color.WHITE);
+    private void kpClearBgColor() {
+        kpRadioButton1.setBackgroundColor(Color.WHITE);
+        kpRadioButton2.setBackgroundColor(Color.WHITE);
+        kpRadioButton3.setBackgroundColor(Color.WHITE);
+        kpRadioButton4.setBackgroundColor(Color.WHITE);
     }
 }

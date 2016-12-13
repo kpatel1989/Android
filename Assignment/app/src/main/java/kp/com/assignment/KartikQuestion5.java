@@ -10,13 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,22 +23,22 @@ import java.util.HashMap;
 public class KartikQuestion5 extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
 
-    TextView questionLabel;
-    Button nextBtn;
-    ListView listView;
-    String selectedAns;
-    View previousSelected;
+    TextView kpQuestionLabel;
+    Button kpNextBtn;
+    ListView kpLlistView;
+    String kpSelectedAns;
+    View kpPreviousSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kartik_question5);
 
-        questionLabel = (TextView) findViewById(R.id.question5Label);
-        nextBtn = (Button) findViewById(R.id.question5Next);
-        nextBtn.setOnClickListener(this);
+        kpQuestionLabel = (TextView) findViewById(R.id.question5Label);
+        kpNextBtn = (Button) findViewById(R.id.question5Next);
+        kpNextBtn.setOnClickListener(this);
 
-        questionLabel.setText("5. In which country are you studying ?");
+        kpQuestionLabel.setText("5. In which country are you studying ?");
 
         ArrayList<HashMap<String, String>> listItems = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> hashMap = new HashMap<String, String>();
@@ -64,19 +61,19 @@ public class KartikQuestion5 extends AppCompatActivity implements View.OnClickLi
         hashMap.put("image",R.drawable.uk+"");
         listItems.add(hashMap);
 
-        listView = (ListView) findViewById(R.id.listView);
-        CustomListViewAdapter adapter = new CustomListViewAdapter(this, listItems);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        kpLlistView = (ListView) findViewById(R.id.listView);
+        KPCustomListViewAdapter adapter = new KPCustomListViewAdapter(this, listItems);
+        kpLlistView.setAdapter(adapter);
+        kpLlistView.setOnItemClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (selectedAns != "") {
-            if (selectedAns == "Canada") {
-                ((App) getApplication()).questionBank.correctAns += 1;
+        if (kpSelectedAns != "") {
+            if (kpSelectedAns == "Canada") {
+                ((App) getApplication()).kpQuestionBank.kpCorrectAns += 1;
             }
-            int score = ((App) getApplication()).questionBank.correctAns;
+            int score = ((App) getApplication()).kpQuestionBank.kpCorrectAns;
             String text = "Your score is " + score + "\n";
             switch (score) {
                 case 0:
@@ -103,32 +100,32 @@ public class KartikQuestion5 extends AppCompatActivity implements View.OnClickLi
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                selectedAns = "Canada";
+                kpSelectedAns = "Canada";
                 break;
             case 1:
-                selectedAns = "United States of America";
+                kpSelectedAns = "United States of America";
                 break;
             case 2:
-                selectedAns = "India";
+                kpSelectedAns = "India";
                 break;
             case 3:
-                selectedAns = "United Kingdom";
+                kpSelectedAns = "United Kingdom";
                 break;
         }
-        if (previousSelected != null) {
-            previousSelected.setBackgroundColor(Color.WHITE);
+        if (kpPreviousSelected != null) {
+            kpPreviousSelected.setBackgroundColor(Color.WHITE);
         }
         view.setBackgroundColor(Color.GREEN);
-        previousSelected = view;
+        kpPreviousSelected = view;
     }
 }
-    class CustomListViewAdapter extends BaseAdapter {
+    class KPCustomListViewAdapter extends BaseAdapter {
 
         private Activity activity;
         private ArrayList<HashMap<String, String>> data;
         private static LayoutInflater inflater=null;
 
-        public CustomListViewAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
+        public KPCustomListViewAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
             this.activity = activity;
             this.data = data;
             inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

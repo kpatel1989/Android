@@ -1,5 +1,6 @@
 package kp.com.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -225,5 +226,50 @@ public class KpTaskDb {
                 return null;
             }
         }
+    }
+
+
+    public long insertTask(KpTask task) {
+        ContentValues cv = new ContentValues();
+        cv.put(KP_TASK_LIST_ID, task.getListId());
+        cv.put(KP_TASK_NAME, task.getName());
+        cv.put(KP_TASK_NOTES, task.getNotes());
+        cv.put(KP_TASK_COMPLETED, task.getCompletedDate());
+        cv.put(KP_TASK_HIDDEN, task.getHidden());
+
+        this.openWriteableDB();
+        long rowID = kpDb.insert(KP_TASK_TABLE, null, cv);
+        this.closeDB();
+
+        return rowID;
+    }
+
+    public int updateTask(KpTask task) {
+        ContentValues cv = new ContentValues();
+        cv.put(KP_TASK_LIST_ID, task.getListId());
+        cv.put(KP_TASK_NAME, task.getName());
+        cv.put(KP_TASK_NOTES, task.getNotes());
+        cv.put(KP_TASK_COMPLETED, task.getCompletedDate());
+        cv.put(KP_TASK_HIDDEN, task.getHidden());
+
+        String where = KP_TASK_ID + "= ?";
+        String[] whereArgs = { String.valueOf(task.getId()) };
+
+        this.openWriteableDB();
+        int rowCount = kpDb.update(KP_TASK_TABLE, cv, where, whereArgs);
+        this.closeDB();
+
+        return rowCount;
+    }
+
+    public int deleteTask(long id) {
+        String where = KP_TASK_ID + "= ?";
+        String[] whereArgs = { String.valueOf(id) };
+
+        this.openWriteableDB();
+        int rowCount = kpDb.delete(KP_TASK_TABLE, where, whereArgs);
+        this.closeDB();
+
+        return rowCount;
     }
 }
