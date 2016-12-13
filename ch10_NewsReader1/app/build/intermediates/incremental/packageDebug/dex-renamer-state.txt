@@ -1,7 +1,0 @@
-#Mon Dec 12 08:43:38 EST 2016
-base.0=/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_f55026409d4392ce53b0a843cef6da39c1ddcee5
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_20eecde7b74927cd3233f97bb4c5d5192473feb1/classes.dex
-base.1=/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_20eecde7b74927cd3233f97bb4c5d5192473feb1
-file.0=/Users/macadmin/Documents/Kartik/Android/ch10_NewsReader1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_f55026409d4392ce53b0a843cef6da39c1ddcee5/classes.dex
