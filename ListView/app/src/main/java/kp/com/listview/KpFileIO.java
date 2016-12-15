@@ -22,12 +22,12 @@ import javax.xml.parsers.SAXParserFactory;
  * Created by macadmin on 2016-12-08.
  */
 
-public class FileIO {
+public class KpFileIO {
     private final String URL_STRING = "http://rss.cnn.com/rss/cnn_tech.rss";
     private final String FILENAME = "news_feed.xml";
     private Context kpContext = null;
 
-    public FileIO (Context context) {
+    public KpFileIO(Context context) {
         this.kpContext = context;
     }
 

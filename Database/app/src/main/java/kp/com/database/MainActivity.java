@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class MainActivity extends FragmentActivity {
 
     KpTaskDb kpDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
