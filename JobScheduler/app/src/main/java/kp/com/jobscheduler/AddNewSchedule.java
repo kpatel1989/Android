@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -22,17 +23,24 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 import java.util.Date;
 
+import kp.com.jobscheduler.data.Schedule;
+
 public class AddNewSchedule extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
-//    DatePicker datePicker;
     Button selectStartDate, selectStartTime, selectEndDate, selectEndTime, save;
     EditText startDate,startTime,endDate,endTime;
     boolean isPickerStartTime,isPickerStartDate;
+    Schedule schedule;
+    Calendar startDt, endDt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_schedule);
+
+        schedule = new Schedule();
+        startDt = Calendar.getInstance();
+        endDt = Calendar.getInstance();
 
         selectStartDate = (Button) findViewById(R.id.selectStartDate);
         selectStartDate.setOnClickListener(this);
@@ -101,11 +109,12 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
 
             newFragment.show();
         } else {
-            SharedPreferences prefs = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            String dates = prefs.getString("dates","");
-            dates += "," + startDate.getText() + "-" + startTime.getText();
-            editor.putString("dates",dates);
+            schedule.setStartTime(startDt.getTimeInMillis());
+            schedule.setEndTime(endDt.getTimeInMillis());
+            ((JobSchedulerApp)getApplication()).saveSchedule(schedule);
+            Intent i = new Intent();
+            i.putExtra("done","ok");
+            this.setResult(RESULT_OK,i);
             this.finish();
         }
     }
@@ -114,8 +123,12 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (isPickerStartTime) {
+            startDt.set(Calendar.HOUR_OF_DAY,hourOfDay);
+            startDt.set(Calendar.MINUTE, minute);
             startTime.setText(hourOfDay + ":" + minute);
         } else {
+            endDt.set(Calendar.HOUR_OF_DAY,hourOfDay);
+            endDt.set(Calendar.MINUTE,minute);
             endTime.setText(hourOfDay + ":" + minute);
         }
     }
@@ -123,8 +136,14 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (isPickerStartDate) {
+            startDt.set(Calendar.YEAR,year);
+            startDt.set(Calendar.MONTH,month);
+            startDt.set(Calendar.DAY_OF_MONTH,dayOfMonth);
             startDate.setText(dayOfMonth + "/" + month + "/" + year);
         } else {
+            endDt.set(Calendar.YEAR,year);
+            endDt.set(Calendar.MONTH,month);
+            endDt.set(Calendar.DAY_OF_MONTH,dayOfMonth);
             endDate.setText(dayOfMonth + "/" + month + "/" + year);
         }
 

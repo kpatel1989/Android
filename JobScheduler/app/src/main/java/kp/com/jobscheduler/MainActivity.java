@@ -16,16 +16,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import kp.com.jobscheduler.data.Database;
+import kp.com.jobscheduler.data.Schedule;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TableLayout timeLogTable;
+    ListView timeLogList;
+    Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this,AddNewSchedule.class);
-                startActivity(i);
+                startActivityForResult(i,1);
             }
         });
 
@@ -53,8 +59,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        timeLogTable = (TableLayout) findViewById(R.id.timeLogTable);
-        Database database = new Database(this);
+        timeLogList = (ListView) findViewById(R.id.timeLogTable);
+        ((JobSchedulerApp)getApplication()).setDatabase(new Database(this));
+        database = ((JobSchedulerApp)getApplication()).getDatabase();
+        refreshDates();
     }
 
     @Override
@@ -65,24 +73,20 @@ public class MainActivity extends AppCompatActivity
 //        }
     }
     public void refreshDates() {
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+        ArrayList<Schedule> schedules = database.getSchedules();
+        timeLogList.removeAllViews();
+        for (Schedule schedule : schedules) {
 
-        String dates = prefs.getString("dates","");
-        String[] dts = dates.split(",");
-        for (int i = 0;i<dts.length;i++) {
-            TableRow row = new TableRow(this);
-            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT);
-            row.setLayoutParams(lp);
 
             TextView textView = new TextView(this);
-            textView.setText(dts[i]);
+            textView.setText(schedule.getStartTimeFormatted() + "  -  " + schedule.getEndTimeFormatted());
             row.addView(textView);
 
-            Button edit = new Button(this);
-            edit.setText("Edit");
-            row.addView(edit);
+//            Button edit = new Button(this);
+//            edit.setText("Edit");
+//            row.addView(edit);
 
-            timeLogTable.addView(row);
+            timeLogList.addView(row);
         }
     }
 
@@ -111,8 +115,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_calculate_pay) {
+            startActivity(new Intent(this,CalculatePay.class));
         }
 
         return super.onOptionsItemSelected(item);
