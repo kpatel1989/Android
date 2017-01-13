@@ -8,6 +8,7 @@ public class WageCalculator {
     private int hoursPerWeek = 20;
     private double perHourWage = 11.40;
     private double extraHourWage = 9.0;
+    private String currency = "$";
 
     public WageCalculator() {
     }

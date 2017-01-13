@@ -1,5 +1,6 @@
 package kp.com.jobscheduler.data;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -7,7 +8,8 @@ import java.util.HashMap;
  * Created by macadmin on 2016-12-12.
  */
 
-public class Schedule {
+public class Schedule implements Serializable{
+    private int id;
     private long startTime;
     private long endTime;
 
@@ -43,12 +45,17 @@ public class Schedule {
         this.endTime = endTime;
     }
 
-    public Schedule(long startTime, long endTime) {
+    public Schedule(int id, long startTime, long endTime) {
+        this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
     public long getTotalTime() {
         return this.endTime - this.startTime;
+    }
+
+    public int getId() {
+        return id;
     }
 }

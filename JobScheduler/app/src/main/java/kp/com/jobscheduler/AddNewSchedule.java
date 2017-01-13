@@ -38,7 +38,6 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_schedule);
 
-        schedule = new Schedule();
         startDt = Calendar.getInstance();
         endDt = Calendar.getInstance();
 
@@ -62,6 +61,32 @@ public class AddNewSchedule extends AppCompatActivity implements View.OnClickLis
 
         save = (Button) findViewById(R.id.save);
         save.setOnClickListener(this);
+
+        schedule = (Schedule) this.getIntent().getSerializableExtra("schedule");
+        if (schedule != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(schedule.getStartTime());
+            startDt.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY));
+            startDt.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
+            startTime.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+
+            startDt.set(Calendar.YEAR,calendar.get(Calendar.YEAR));
+            startDt.set(Calendar.MONTH,calendar.get(Calendar.MONTH));
+            startDt.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH));
+            startDate.setText(calendar.get(Calendar.DAY_OF_MONTH)+ "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
+
+            calendar.setTimeInMillis(schedule.getEndTime());
+            endDt.set(Calendar.YEAR,calendar.get(Calendar.YEAR));
+            endDt.set(Calendar.MONTH,calendar.get(Calendar.MONTH));
+            endDt.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH));
+            endDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
+
+            endDt.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY));
+            endDt.set(Calendar.MINUTE,calendar.get(Calendar.MINUTE));
+            endTime.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+        } else {
+            schedule = new Schedule();
+        }
     }
 
     @Override

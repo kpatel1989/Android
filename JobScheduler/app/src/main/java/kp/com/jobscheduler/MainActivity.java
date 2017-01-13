@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import kp.com.jobscheduler.data.Database;
+import kp.com.jobscheduler.data.PayCycle;
 import kp.com.jobscheduler.data.Schedule;
 
 public class MainActivity extends AppCompatActivity
@@ -59,35 +60,24 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        timeLogList = (ListView) findViewById(R.id.timeLogTable);
         ((JobSchedulerApp)getApplication()).setDatabase(new Database(this));
         database = ((JobSchedulerApp)getApplication()).getDatabase();
+
+        timeLogList = (ListView) findViewById(R.id.timeLogList);
         refreshDates();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (data.getClass().toString() == AddNewSchedule.class.toString()) {
+        if (requestCode == 1) {
             refreshDates();
-//        }
+        }
     }
     public void refreshDates() {
-        ArrayList<Schedule> schedules = database.getSchedules();
-        timeLogList.removeAllViews();
-        for (Schedule schedule : schedules) {
-
-
-            TextView textView = new TextView(this);
-            textView.setText(schedule.getStartTimeFormatted() + "  -  " + schedule.getEndTimeFormatted());
-            row.addView(textView);
-
-//            Button edit = new Button(this);
-//            edit.setText("Edit");
-//            row.addView(edit);
-
-            timeLogList.addView(row);
-        }
+        ArrayList<Schedule> schedules = ((JobSchedulerApp)getApplication()).getAllSchedules();
+        TimeLogListItemAdapter listItemAdapter = new TimeLogListItemAdapter(this,schedules);
+        timeLogList.setAdapter(listItemAdapter);
     }
 
     @Override
@@ -128,17 +118,18 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.viewShifts) {
+            Intent i = this.getIntent();
+            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        } else if (id == R.id.viewPayCycles) {
+            Intent i = new Intent(this, PayCycles.class);
+            startActivityForResult(i,2);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.backupData) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.notifications) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.settings) {
 
         }
 

@@ -39,7 +39,6 @@ public class Database extends SQLiteOpenHelper{
     public static final String SCHEDULE_COL_EndDay = "endTime";
 
     SQLiteDatabase db;
-    private Schedule[] schedules;
 
     public Database(Context context) {
         super(context, JOB_SCHEDULE_DB, null, JOB_SCHEDULE_DB_VERSION);
@@ -56,6 +55,11 @@ public class Database extends SQLiteOpenHelper{
         HashMap<String,String> map = new HashMap<>();
         map.put(WORKLOG_COL_NAME,"Subway");
         long rowId = insertData(WORKLOG_TABLE_NAME,map);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        onCreate(sqLiteDatabase);
     }
 
     private void dropTables() {
@@ -96,20 +100,27 @@ public class Database extends SQLiteOpenHelper{
         for (String value: values.keySet()) {
             contentValues.put(value, values.get(value));
         }
-        return db.insert(tableName,null,contentValues);
+        if (values.get("id") != null) {
+            String whereClause = "id = ?";
+            String[] whereArgs = {values.get("id")};
+            return db.update(tableName, contentValues, whereClause, whereArgs);
+        } else {
+            return db.insert(tableName,null,contentValues);
+        }
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        onCreate(sqLiteDatabase);
+    public long deleteData(String tableName, int id) {
+        String whereClause = "id = ?";
+        String[] whereArgs = {id+""};
+        return db.delete(tableName,whereClause,whereArgs);
     }
 
     public ArrayList<Schedule> getSchedules() {
         ArrayList<Schedule> schedules = new ArrayList<>();
-        String[] cols = {SCHEDULE_COL_StartDay,SCHEDULE_COL_EndDay};
+        String[] cols = {SCHEDULE_COL_ID, SCHEDULE_COL_StartDay, SCHEDULE_COL_EndDay};
         Cursor cursor = db.query(SCHEDULE_TABLE_NAME,cols,null,null,null,null,"");
         while (cursor.moveToNext()) {
-            schedules.add(new Schedule(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1))));
+            schedules.add(new Schedule(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Long.parseLong(cursor.getString(2))));
         }
         cursor.close();
         return schedules;
@@ -117,22 +128,73 @@ public class Database extends SQLiteOpenHelper{
 
     public HashMap<String, String> serializeSchedule(Schedule schedule) {
         HashMap<String, String> map = new HashMap<>();
+        if (schedule.getId() > 0) {
+            map.put(Database.SCHEDULE_COL_ID,String.valueOf(schedule.getId()));
+        }
         map.put(Database.SCHEDULE_COL_StartDay,String.valueOf(schedule.getStartTime()));
         map.put(Database.SCHEDULE_COL_EndDay,String.valueOf(schedule.getEndTime()));
         return map;
     }
 
+    public HashMap<String, String> serializePayCycle(PayCycle payCycle) {
+        HashMap<String, String> map = new HashMap<>();
+        if (payCycle.getId() > 0) {
+            map.put(Database.PAYCYCLE_COL_ID,String.valueOf(payCycle.getId()));
+        }
+        map.put(Database.PAYCYCLE_COL_StartDay,String.valueOf(payCycle.getStartDay()));
+        map.put(Database.PAYCYCLE_COL_EndDay,String.valueOf(payCycle.getEndDay()));
+        return map;
+    }
+
     public ArrayList<Schedule> getSchedulesInPayCycle(PayCycle payCycle) {
         ArrayList<Schedule> schedules = new ArrayList<>();
-        String[] cols = {SCHEDULE_COL_StartDay,SCHEDULE_COL_EndDay};
+        String[] cols = {SCHEDULE_COL_ID,SCHEDULE_COL_StartDay,SCHEDULE_COL_EndDay};
         String selection = SCHEDULE_COL_StartDay + " > ? AND " + SCHEDULE_COL_EndDay + "< ?";
         String[] selectionArgs = {payCycle.getStartDay()+"", payCycle.getEndDay()+""};
         Cursor cursor = db.query(SCHEDULE_TABLE_NAME,cols,selection,selectionArgs,null,null,"");
         cursor.moveToFirst();
         do {
-            schedules.add(new Schedule(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1))));
+            schedules.add(new Schedule(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1))));
         } while (cursor.moveToNext());
         cursor.close();
         return schedules;
+    }
+
+    public ArrayList<PayCycle> getPayCycles() {
+        ArrayList<PayCycle> paycycles = new ArrayList<>();
+        String[] cols = {PAYCYCLE_COL_ID, PAYCYCLE_COL_StartDay, PAYCYCLE_COL_EndDay};
+        Cursor cursor = db.query(PAYCYCLE_TABLE_NAME,cols,null,null,null,null,"");
+        while (cursor.moveToNext()) {
+            paycycles.add(new PayCycle(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Long.parseLong(cursor.getString(2))));
+        }
+        cursor.close();
+        return paycycles;
+    }
+
+
+    public long getLastPayDay() {
+        String orderBy = PAYCYCLE_COL_EndDay + " ASC";
+        String[] cols = {PAYCYCLE_COL_ID, PAYCYCLE_COL_StartDay, PAYCYCLE_COL_EndDay};
+        Cursor c = db.query(PAYCYCLE_TABLE_NAME,cols,"",null,null,null,orderBy);
+        if (c.moveToFirst()) {
+            return Long.parseLong(c.getString(2));
+        } else {
+            Schedule schedule = getFirstSchedule();
+            if (schedule != null) {
+                return schedule.getStartTime();
+            }
+        }
+        return -1;
+    }
+
+    private Schedule getFirstSchedule() {
+        String orderBy = SCHEDULE_COL_StartDay + " ASC";
+        String[] cols = {SCHEDULE_COL_ID, SCHEDULE_COL_StartDay, SCHEDULE_COL_EndDay};
+        Cursor c = db.query(SCHEDULE_TABLE_NAME,cols,"",null,null,null,orderBy);
+        if (c.moveToFirst()) {
+            return new Schedule(c.getInt(0), Long.parseLong(c.getString(1)), Long.parseLong(c.getString(2)));
+        } else {
+            return null;
+        }
     }
 }

@@ -6,4 +6,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_calculate_pay">Calculate Pay</string>
+    <string name="payCycleEndDay">EndDay</string>
+    <string name="payCycleStartDay">startDay</string>
 </resources>
