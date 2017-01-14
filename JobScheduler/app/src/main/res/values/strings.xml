@@ -8,4 +8,7 @@
     <string name="action_calculate_pay">Calculate Pay</string>
     <string name="payCycleEndDay">EndDay</string>
     <string name="payCycleStartDay">startDay</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

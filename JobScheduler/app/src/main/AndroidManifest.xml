@@ -21,7 +21,6 @@
         </activity>
         <activity android:name=".AddNewSchedule" />
         <activity android:name=".CalculatePay" />
-        <activity android:name=".PayCycles"></activity>
     </application>
 
 </manifest>

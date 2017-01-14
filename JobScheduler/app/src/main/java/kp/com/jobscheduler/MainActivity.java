@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -31,13 +36,19 @@ import kp.com.jobscheduler.data.Schedule;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ListView timeLogList;
     Database database;
+    FrameLayout mainFrame;
+    LayoutInflater inflater;
+    ScheduleListFragment scheduleListFragment;
+    PayCycleFragment payCycleFragment;
+    Fragment currentOpenFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        inflater = LayoutInflater.from(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,21 +74,21 @@ public class MainActivity extends AppCompatActivity
         ((JobSchedulerApp)getApplication()).setDatabase(new Database(this));
         database = ((JobSchedulerApp)getApplication()).getDatabase();
 
-        timeLogList = (ListView) findViewById(R.id.timeLogList);
-        refreshDates();
+        initFragments();
+        //showFragment(R.id.scheduleListFragment);
+        currentOpenFragment = scheduleListFragment;
+        navigationView.setCheckedItem(R.id.viewShifts);
+    }
+
+    private void initFragments() {
+        scheduleListFragment = (ScheduleListFragment) getSupportFragmentManager().findFragmentById(R.id.scheduleListFragment);
+        payCycleFragment = (PayCycleFragment) getSupportFragmentManager().findFragmentById(R.id.payCycleFragment);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            refreshDates();
-        }
-    }
-    public void refreshDates() {
-        ArrayList<Schedule> schedules = ((JobSchedulerApp)getApplication()).getAllSchedules();
-        TimeLogListItemAdapter listItemAdapter = new TimeLogListItemAdapter(this,schedules);
-        timeLogList.setAdapter(listItemAdapter);
+        scheduleListFragment.refreshDates();
     }
 
     @Override
@@ -88,6 +99,10 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void refreshDates() {
+        this.scheduleListFragment.refreshDates();
     }
 
     @Override
@@ -117,24 +132,38 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.viewShifts) {
-            Intent i = this.getIntent();
-            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        } else if (id == R.id.viewPayCycles) {
-            Intent i = new Intent(this, PayCycles.class);
-            startActivityForResult(i,2);
-
-        } else if (id == R.id.backupData) {
-
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.settings) {
-
-        }
+        showFragment(id);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
+
+    private void showFragment(int id) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (currentOpenFragment != null) {
+            fragmentTransaction.hide(currentOpenFragment);
+        }
+        switch (id) {
+            case R.id.viewShifts:
+                fragmentTransaction.show(scheduleListFragment);
+                currentOpenFragment = scheduleListFragment;
+                break;
+            case R.id.viewPayCycles:
+                fragmentTransaction.show(payCycleFragment);
+                currentOpenFragment = payCycleFragment;
+                break;
+            case R.id.backupData:
+                break;
+            case R.id.notifications:
+                break;
+            case R.id.settings:
+                break;
+            default:
+                break;
+        }
+        fragmentTransaction.commit();
+    }
+
 }
