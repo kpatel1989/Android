@@ -120,8 +120,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_calculate_pay) {
-            startActivity(new Intent(this,CalculatePay.class));
+        switch (id) {
+            case R.id.action_calculate_pay:
+                startActivity(new Intent(this,CalculatePay.class));
+                break;
+            case R.id.action_set_work_location:
+                startActivity(new Intent(this,MapsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

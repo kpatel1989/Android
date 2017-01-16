@@ -1,8 +1,10 @@
 package kp.com.jobscheduler;
 
+import android.*;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.Preference;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.ArraySet;
 
