@@ -7,7 +7,8 @@ package kp.com.jobscheduler.data;
 public class WageCalculator {
     private int hoursPerWeek = 20;
     private double perHourWage = 11.40;
-    private double extraHourWage = 9.0;
+    private double extraHourWage = 9.5;
+    private int weeksPerPayCycle = 2;
     private String currency = "$";
 
     public WageCalculator() {
@@ -16,9 +17,9 @@ public class WageCalculator {
     public double calculateWage(double hours, double minutes) {
         double totalWage = 0.0;
         double totalHours = hours + (minutes/60);
-        if (totalHours >= hoursPerWeek) {
-            totalWage += (hoursPerWeek * perHourWage);
-            totalHours -= hoursPerWeek;
+        if (totalHours > (hoursPerWeek* weeksPerPayCycle)) {
+            totalWage = (hoursPerWeek * weeksPerPayCycle * perHourWage);
+            totalHours -= (hoursPerWeek * weeksPerPayCycle);
             if (totalHours > 0) {
                 totalWage += (totalHours * extraHourWage);
             }

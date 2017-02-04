@@ -154,7 +154,7 @@ public class Database extends SQLiteOpenHelper{
         Cursor cursor = db.query(SCHEDULE_TABLE_NAME,cols,selection,selectionArgs,null,null,"");
         cursor.moveToFirst();
         do {
-            schedules.add(new Schedule(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1))));
+            schedules.add(new Schedule(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Long.parseLong(cursor.getString(2))));
         } while (cursor.moveToNext());
         cursor.close();
         return schedules;

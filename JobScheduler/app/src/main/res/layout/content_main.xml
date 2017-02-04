@@ -17,6 +17,14 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/homeFragment"
+        android:name="kp.com.jobscheduler.HomeFragment"
+        tools:layout="@layout/fragment_home">
+
+    </fragment>
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/scheduleListFragment"
         android:name="kp.com.jobscheduler.ScheduleListFragment"
         tools:layout="@layout/fragment_schedule_list">

@@ -2,6 +2,7 @@ package kp.com.jobscheduler;
 
 import android.*;
 import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -61,14 +62,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (!gpsTracker.hasPermissions()) {
             requestPermission();
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermission();
+        }
         gpsTracker.getLocation();
         LatLng location;
         if (gpsTracker.canGetLocation()) {
             // Add a marker at your current location and move the camera
             location = gpsTracker.getLatLng();
-            mMap.addMarker(new MarkerOptions().position(location).title("Your Location"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,15));
+//            mMap.addMarker(new MarkerOptions().position(location).title("Your Location"));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+            mMap.setMyLocationEnabled(true);
         } else {
             gpsTracker.showSettingsAlert();
         }
