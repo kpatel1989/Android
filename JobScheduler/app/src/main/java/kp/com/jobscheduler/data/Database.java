@@ -173,11 +173,9 @@ public class Database extends SQLiteOpenHelper{
 
 
     public long getLastPayDay() {
-        String orderBy = PAYCYCLE_COL_EndDay + " ASC";
-        String[] cols = {PAYCYCLE_COL_ID, PAYCYCLE_COL_StartDay, PAYCYCLE_COL_EndDay};
-        Cursor c = db.query(PAYCYCLE_TABLE_NAME,cols,"",null,null,null,orderBy);
-        if (c.moveToFirst()) {
-            return Long.parseLong(c.getString(2));
+        PayCycle lastPayCycle = this.getLastPayCycle();
+        if (lastPayCycle != null) {
+            return lastPayCycle.getEndDay();
         } else {
             Schedule schedule = getFirstSchedule();
             if (schedule != null) {
@@ -185,6 +183,17 @@ public class Database extends SQLiteOpenHelper{
             }
         }
         return -1;
+    }
+
+    public PayCycle getLastPayCycle() {
+        String orderBy = PAYCYCLE_COL_EndDay + " ASC";
+        String[] cols = {PAYCYCLE_COL_ID, PAYCYCLE_COL_StartDay, PAYCYCLE_COL_EndDay};
+        Cursor cursor = db.query(PAYCYCLE_TABLE_NAME,cols,"",null,null,null,orderBy);
+        if (cursor.moveToFirst()) {
+            return new PayCycle(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Long.parseLong(cursor.getString(2)));
+        } else {
+            return null;
+        }
     }
 
     private Schedule getFirstSchedule() {

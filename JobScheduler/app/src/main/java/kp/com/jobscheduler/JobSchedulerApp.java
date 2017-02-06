@@ -51,8 +51,13 @@ public class JobSchedulerApp extends Application {
     public ArrayList<PayCycle> getPayCycles() {
         return database.getPayCycles();
     }
+
     public long getLastPayDay() {
         return this.database.getLastPayDay();
+    }
+
+    public PayCycle getLastPayCycle() {
+        return this.database.getLastPayCycle();
     }
 
     public ArrayList<Schedule> getAllSchedules() {

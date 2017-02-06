@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import kp.com.jobscheduler.JobSchedulerApp;
+
 /**
  * Created by macadmin on 2016-12-12.
  */
@@ -82,5 +84,12 @@ public class PayCycle implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public double calculatePay() {
+        long totalTime = getTotalTime();
+        double hours = Math.floor(totalTime / (1000 * 60 * 60));
+        double minutes = Math.ceil((totalTime - (hours * 1000 * 60 * 60))/ (1000 * 60));
+        return new WageCalculator().calculateWage(hours,minutes);
     }
 }

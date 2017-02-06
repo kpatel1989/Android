@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     LayoutInflater inflater;
     ScheduleListFragment scheduleListFragment;
     PayCycleFragment payCycleFragment;
+    HomeFragment homeFragment;
     Fragment currentOpenFragment;
 
     @Override
@@ -76,11 +77,12 @@ public class MainActivity extends AppCompatActivity
 
         initFragments();
         //showFragment(R.id.scheduleListFragment);
-        currentOpenFragment = scheduleListFragment;
-        navigationView.setCheckedItem(R.id.viewShifts);
+        currentOpenFragment = homeFragment;
+        navigationView.setCheckedItem(R.id.home);
     }
 
     private void initFragments() {
+        homeFragment = (HomeFragment)  getSupportFragmentManager().findFragmentById(R.id.homeFragment);
         scheduleListFragment = (ScheduleListFragment) getSupportFragmentManager().findFragmentById(R.id.scheduleListFragment);
         payCycleFragment = (PayCycleFragment) getSupportFragmentManager().findFragmentById(R.id.payCycleFragment);
     }
@@ -150,6 +152,10 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.hide(currentOpenFragment);
         }
         switch (id) {
+            case R.id.home:
+                fragmentTransaction.show(homeFragment);
+                currentOpenFragment = homeFragment;
+                break;
             case R.id.viewShifts:
                 fragmentTransaction.show(scheduleListFragment);
                 currentOpenFragment = scheduleListFragment;

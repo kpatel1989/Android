@@ -74,7 +74,7 @@ public class CalculatePay extends AppCompatActivity implements View.OnClickListe
                 long totalTime = payCycle.getTotalTime();
                 double hours = Math.floor(totalTime / (1000 * 60 * 60));
                 double minutes = Math.ceil((totalTime - (hours * 1000 * 60 * 60))/ (1000 * 60));
-                double totalWage = new WageCalculator().calculateWage(hours,minutes);
+                double totalWage = payCycle.calculatePay();
                 Toast.makeText(this,hours + " hours , " + minutes + " minutes. Total Wage = " + totalWage,Toast.LENGTH_LONG).show();
                 break;
         }
